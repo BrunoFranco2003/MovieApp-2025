@@ -1,5 +1,5 @@
-const CHAVE_API = 'bac370b35694ac13c8682b30d206c902'
-const URL_BASE ='https://movieappAPI.com.br';
+const CHAVE_API = 'dbac370b35694ac13c8682b30d206c902'; 
+const URL_BASE = `https://api.themoviedb.org/3/movie/now_playing?api_key=${CHAVE_API}&language=pt-BR&page=1`;
 
 const containerFilmes = document.getElementById('moviesContainer');
 const campoBusca = document.getElementById('searchInput');
@@ -42,4 +42,3 @@ campoBusca.addEventListener('input', async () => {
 });
 
 carregarFilmes(URL_BASE);
-
