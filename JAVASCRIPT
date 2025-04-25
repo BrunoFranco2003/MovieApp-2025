@@ -1,4 +1,4 @@
-const CHAVE_API = 'ac370b35694ac13c8682b30d206c90'
+const CHAVE_API = 'bac370b35694ac13c8682b30d206c902'
 const URL_BASE ='https://movieappAPI.com.br';
 
 const containerFilmes = document.getElementById('moviesContainer');
