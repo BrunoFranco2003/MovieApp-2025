@@ -67,25 +67,41 @@
 <body>
   <header>
     <h1>🍿 Filmes em Cartaz</h1>
-    <div id="filters">
-      <input type="text" id="searchInput" placeholder="Buscar filme...">
-      <select id="ratingFilter">
-        <option value="">Filtrar por avaliação</option>
-        <option value="high">Mais avaliados</option>
-        <option value="low">Menos avaliados</option>
-        <option value="medium">Mediamente avaliados</option>
-      </select>
-      <select id="yearFilter">
-        <option value="">Filtrar por ano</option>
-        <option value="2025">Lançados em 2025</option>
-        <option value="2024">Lançados em 2024</option>
-      </select>
-      <select id="popularityFilter">
-        <option value="">Filtrar por popularidade</option>
-        <option value="high">Mais populares</option>
-        <option value="low">Menos populares</option>
-      </select>
-    </div>
+    <div id="filters" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+  <input type="text" id="searchInput" placeholder="🔍 Buscar filme..." style="flex: 1; min-width: 200px;">
+  
+  <select id="genreFilter">
+    <option value="">🎭 Filtrar por gênero</option>
+    <option value="28">Ação</option>
+    <option value="35">Comédia</option>
+    <option value="18">Drama</option>
+    <option value="27">Terror</option>
+    <option value="10749">Romance</option>
+    <option value="16">Animação</option>
+  </select>
+
+  <select id="ratingFilter">
+    <option value="">⭐ Avaliação</option>
+    <option value="high">Mais avaliados</option>
+    <option value="medium">Média</option>
+    <option value="low">Menos avaliados</option>
+  </select>
+
+  <select id="yearFilter">
+    <option value="">📅 Ano</option>
+    <option value="2025">2025</option>
+    <option value="2024">2024</option>
+    <option value="2023">2023</option>
+    <option value="2022">2022</option>
+  </select>
+
+  <select id="popularityFilter">
+    <option value="">🔥 Popularidade</option>
+    <option value="high">Mais populares</option>
+    <option value="low">Menos populares</option>
+  </select>
+</div>
+
   </header>
 
   <div id="moviesContainer"></div>
