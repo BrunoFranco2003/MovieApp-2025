@@ -67,48 +67,32 @@
 <body>
   <header>
     <h1>🍿 Filmes em Cartaz</h1>
-    <div id="filters" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
-  <input type="text" id="searchInput" placeholder="🔍 Buscar filme..." style="flex: 1; min-width: 200px;">
-  
-  <select id="genreFilter">
-    <option value="">🎭 Filtrar por gênero</option>
-    <option value="28">Ação</option>
-    <option value="35">Comédia</option>
-    <option value="18">Drama</option>
-    <option value="27">Terror</option>
-    <option value="10749">Romance</option>
-    <option value="16">Animação</option>
-  </select>
-
-  <select id="ratingFilter">
-    <option value="">⭐ Avaliação</option>
-    <option value="high">Mais avaliados</option>
-    <option value="medium">Média</option>
-    <option value="low">Menos avaliados</option>
-  </select>
-
-  <select id="yearFilter">
-    <option value="">📅 Ano</option>
-    <option value="2025">2025</option>
-    <option value="2024">2024</option>
-    <option value="2023">2023</option>
-    <option value="2022">2022</option>
-  </select>
-
-  <select id="popularityFilter">
-    <option value="">🔥 Popularidade</option>
-    <option value="high">Mais populares</option>
-    <option value="low">Menos populares</option>
-  </select>
-</div>
-
+    <div id="filters">
+      <input type="text" id="searchInput" placeholder="Buscar filme...">
+      <select id="ratingFilter">
+        <option value="">Filtrar por avaliação</option>
+        <option value="high">Mais avaliados</option>
+        <option value="low">Menos avaliados</option>
+        <option value="medium">Mediamente avaliados</option>
+      </select>
+      <select id="yearFilter">
+        <option value="">Filtrar por ano</option>
+        <option value="2025">Lançados em 2025</option>
+        <option value="2024">Lançados em 2024</option>
+      </select>
+      <select id="popularityFilter">
+        <option value="">Filtrar por popularidade</option>
+        <option value="high">Mais populares</option>
+        <option value="low">Menos populares</option>
+      </select>
+    </div>
   </header>
 
   <div id="moviesContainer"></div>
 
   <script>
-    const API_KEY = 'bac370b35694ac13c8682b30d206c902';
-    const BASE_URL = `https://movieappAPI.com.br`;
+    const API_KEY = 'd29e79bb675e164fc1f28decd659e21c';
+    const BASE_URL = https://api.themoviedb.org/3;
     const moviesContainer = document.getElementById('moviesContainer');
     const searchInput = document.getElementById('searchInput');
     const ratingFilter = document.getElementById('ratingFilter');
@@ -126,35 +110,35 @@
       movies.forEach(movie => {
         const movieEl = document.createElement('div');
         movieEl.classList.add('movie-card');
-        movieEl.innerHTML = `
+        movieEl.innerHTML = 
           <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}" />
           <h3>${movie.title}</h3>
           <p>Nota: ${movie.vote_average}</p>
           <button onclick="toggleDetalhes(${movie.id}, this)">Ver detalhes</button>
           <div id="detalhes-${movie.id}" class="detalhes-filme" style="display: none;"></div>
-        `;
+        ;
         moviesContainer.appendChild(movieEl);
       });
     }
 
     async function toggleDetalhes(id, btn) {
-      const detalheDiv = document.getElementById(`detalhes-${id}`);
+      const detalheDiv = document.getElementById(detalhes-${id});
 
       if (detalheDiv.style.display === 'none') {
         const [detalhes, creditos, videos] = await Promise.all([
-          fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=pt-BR`).then(res => res.json()),
-          fetch(`${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}&language=pt-BR`).then(res => res.json()),
-          fetch(`${BASE_URL}/movie/${id}/videos?api_key=${API_KEY}&language=pt-BR`).then(res => res.json())
+          fetch(${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=pt-BR).then(res => res.json()),
+          fetch(${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}&language=pt-BR).then(res => res.json()),
+          fetch(${BASE_URL}/movie/${id}/videos?api_key=${API_KEY}&language=pt-BR).then(res => res.json())
         ]);
 
         const elenco = creditos.cast.slice(0, 5).map(ator => ator.name).join(', ');
-        const trailer = videos.results.find(v => v.type === "Trailer" && v.site === "YouTube");const embedTrailer = trailer ? `<iframe width="100%" height="300" " frameborder="0" allowfullscreen></iframe>` : 'Trailer não disponível.';
+        const trailer = videos.results.find(v => v.type === "Trailer" && v.site === "YouTube");const embedTrailer = trailer ? <iframe width="100%" height="300" " frameborder="0" allowfullscreen></iframe> : 'Trailer não disponível.';
 
-        detalheDiv.innerHTML = `
+        detalheDiv.innerHTML = 
           <p><strong>Sinopse:</strong> ${detalhes.overview}</p>
           <p><strong>Elenco:</strong> ${elenco}</p>
           <p><strong>Trailer:</strong><br>${embedTrailer}</p>
-        `;
+        ;
         detalheDiv.style.display = 'block';
         btn.innerText = 'Ocultar detalhes';
       } else {
@@ -164,13 +148,13 @@
     }
 
     function applyFilters() {
-      let url = `${BASE_URL}/discover/movie?api_key=${API_KEY}&language=pt-BR&sort_by=popularity.desc`;
+      let url = ${BASE_URL}/discover/movie?api_key=${API_KEY}&language=pt-BR&sort_by=popularity.desc;
 
       if (ratingFilter.value === 'high') url += '&vote_average.gte=7.5';
       if (ratingFilter.value === 'medium') url += '&vote_average.gte=5&vote_average.lte=7.4';
       if (ratingFilter.value === 'low') url += '&vote_average.lte=5';
 
-      if (yearFilter.value) url += `&primary_release_year=${yearFilter.value}`;
+      if (yearFilter.value) url += &primary_release_year=${yearFilter.value};
 
       if (popularityFilter.value === 'high') url += '&sort_by=popularity.desc';
       if (popularityFilter.value === 'low') url += '&sort_by=popularity.asc';
@@ -180,7 +164,7 @@
 
     searchInput.addEventListener('input', () => {
       const query = searchInput.value.toLowerCase();
-      fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query}&language=pt-BR`)
+      fetch(${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query}&language=pt-BR)
         .then(res => res.json())
         .then(data => displayMovies(data.results));
     });
@@ -189,7 +173,7 @@
     yearFilter.addEventListener('change', applyFilters);
     popularityFilter.addEventListener('change', applyFilters);
 
-    fetchMovies(`${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=pt-BR&page=1`);
+    fetchMovies(${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=pt-BR&page=1);
   </script>
 </body>
 </html>
