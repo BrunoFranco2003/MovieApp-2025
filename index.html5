@@ -66,7 +66,7 @@
 </head>
 <body>
   <header>
-    <h1>🎬 Filmes em Cartaz</h1>
+    <h1>🍿 Filmes em Cartaz</h1>
     <div id="filters">
       <input type="text" id="searchInput" placeholder="Buscar filme...">
       <select id="ratingFilter">
