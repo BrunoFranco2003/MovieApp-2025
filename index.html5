@@ -1,4 +1,4 @@
-DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -132,8 +132,7 @@ DOCTYPE html>
         ]);
 
         const elenco = creditos.cast.slice(0, 5).map(ator => ator.name).join(', ');
-        const trailer = videos.results.find(v => v.type === "Trailer" && v.site === "YouTube");
-        const embedTrailer = trailer ? `<iframe width="100%" height="300" src="https://www.youtube.com/embed/${trailer.key}" frameborder="0" allowfullscreen></iframe>` : 'Trailer não disponível.';
+        const trailer = videos.results.find(v => v.type === "Trailer" && v.site === "YouTube");const embedTrailer = trailer ? `<iframe width="100%" height="300" " frameborder="0" allowfullscreen></iframe>` : 'Trailer não disponível.';
 
         detalheDiv.innerHTML = `
           <p><strong>Sinopse:</strong> ${detalhes.overview}</p>
