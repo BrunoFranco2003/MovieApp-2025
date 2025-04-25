@@ -107,7 +107,7 @@
   <div id="moviesContainer"></div>
 
   <script>
-    const API_KEY = 'ac370b35694ac13c8682';
+    const API_KEY = 'bac370b35694ac13c8682b30d206c902';
     const BASE_URL = `https://movieappAPI.com.br`;
     const moviesContainer = document.getElementById('moviesContainer');
     const searchInput = document.getElementById('searchInput');
