@@ -1,44 +1,35 @@
-const CHAVE_API = 'dbac370b35694ac13c8682b30d206c902'; 
-const URL_BASE = `https://movieappAPI.com.br/3/movie/now_playing?api_key=${CHAVE_API}&language=pt-BR&page=1`;
+const API_KEY = 'd29e79bb675e164fc1f28decd659e21c'; 
+const API_URL = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=pt-BR&page=1`;
 
-const containerFilmes = document.getElementById('moviesContainer');
-const campoBusca = document.getElementById('searchInput');
+const moviesContainer = document.getElementById('moviesContainer');
+const searchInput = document.getElementById('searchInput');
 
-async function carregarFilmes(url) {
-  try {
-    const resposta = await fetch(url);
-    const conteudo = await resposta.json();
-    exibirFilmes(conteudo.results);
-  } catch (erro) {
-    console.error('Erro ao carregar filmes:', erro);
-  }
+async function fetchMovies(url) {
+  const response = await fetch(url);
+  const data = await response.json();
+  displayMovies(data.results);
 }
 
-function exibirFilmes(listaFilmes) {
-  containerFilmes.innerHTML = '';
-  for (const filme of listaFilmes) {
-    const card = document.createElement('div');
-    card.classList.add('movie-card');
-    card.innerHTML = `
-      <img src="https://image.tmdb.org/t/p/w500${filme.poster_path}" alt="${filme.title}" />
-      <h3>${filme.title}</h3>
-      <p>Nota: ${filme.vote_average}</p>
-      <a href="detalhes.html?id=${filme.id}">Ver detalhes</a>
+function displayMovies(movies) {
+  moviesContainer.innerHTML = '';
+  movies.forEach(movie => {
+    const movieEl = document.createElement('div');
+    movieEl.classList.add('movie-card');
+    movieEl.innerHTML = `
+      <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}" />
+      <h3>${movie.title}</h3>
+      <p>Nota: ${movie.vote_average}</p>
+      <a href="detalhes.html?id=${movie.id}">Ver detalhes</a>
     `;
-    containerFilmes.appendChild(card);
-  }
+    moviesContainer.appendChild(movieEl);
+  });
 }
 
-campoBusca.addEventListener('input', async () => {
-  const termo = campoBusca.value.trim().toLowerCase();
-  if (termo.length > 0) {
-    const urlBusca = `https://api.themoviedb.org/3/search/movie?api_key=${CHAVE_API}&query=${termo}&language=pt-BR`;
-    const resultado = await fetch(urlBusca);
-    const json = await resultado.json();
-    exibirFilmes(json.results);
-  } else {
-    carregarFilmes(URL_BASE);
-  }
+searchInput.addEventListener('input', () => {
+  const query = searchInput.value.toLowerCase();
+  fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}&language=pt-BR`)
+    .then(res => res.json())
+    .then(data => displayMovies(data.results));
 });
 
-carregarFilmes(URL_BASE);
+fetchMovies(API_URL);
