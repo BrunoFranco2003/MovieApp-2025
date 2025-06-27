@@ -5,148 +5,94 @@
   <title>Filmes em Cartaz</title>
   <style>
     body {
-      background: linear-gradient(to right, #31b431, #2a5298);
+      background-color: #222;
       color: #fff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
+      font-family: Arial, sans-serif;
       padding: 20px;
     }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
     header {
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
       align-items: center;
-    }
-
-    #filters {
-      background-color: rgba(255, 255, 255, 0.1);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.2);
-      display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-      margin-bottom: 30px;
     }
-
+    #filters {
+      margin-bottom: 20px;
+    }
     select, #searchInput {
       padding: 10px;
-      border-radius: 8px;
+      margin: 5px;
+      border-radius: 5px;
       border: none;
-      font-size: 16px;
-      min-width: 150px;
-      outline: none;
     }
-
-    #applyFiltersBtn {
-      background-color: #f39c12;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    #applyFiltersBtn:hover {
-      background-color: #e67e22;
-    }
-
     #moviesContainer {
       text-align: center;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
     }
-
     .movie-card {
-      background-color: #2c3e50;
+      background-color: #333;
       border-radius: 10px;
-      padding: 15px;
+      padding: 10px;
       margin: 10px;
-      width: 220px;
-      transition: transform 0.2s;
+      display: inline-block;
+      width: 200px;
+      vertical-align: top;
     }
-
-    .movie-card:hover {
-      transform: scale(1.05);
-    }
-
     .movie-card img {
       width: 100%;
       border-radius: 10px;
     }
-
-    .movie-card h3 {
-      font-size: 18px;
-      margin: 10px 0 5px;
-    }
-
     .movie-card button {
-      background-color: #3498db;
+      background-color: #0af;
       color: white;
       border: none;
       padding: 10px;
-      border-radius: 6px;
+      border-radius: 5px;
       cursor: pointer;
       margin-top: 10px;
-      width: 100%;
-      font-weight: bold;
     }
-
-    .movie-card button:hover {
-      background-color: #2980b9;
-    }
-
     .detalhes-filme {
-      background-color: #34495e;
-      border-radius: 5px;
-      padding: 10px;
       text-align: left;
       font-size: 14px;
+      margin-top: 10px;
+      background-color: #444;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    iframe {
+      border-radius: 10px;
       margin-top: 10px;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>🍿🎥 <span style="color: #f1c40f;">Filmes em Cartaz</span>🎬</h1>
+    <h1>🎬 Filmes em Cartaz</h1>
     <div id="filters">
-      <input type="text" id="searchInput" placeholder="🔎 Buscar filme...">
-      <select id="yearFilter">
-        <option value="">📅 Ano</option>
-        <option value="2025">2025</option>
-        <option value="2024">2024</option>
-        <option value="2023">2023</option>
-        <option value="2022">2022</option>
-      </select>
+      <input type="text" id="searchInput" placeholder="Buscar filme...">
       <select id="ratingFilter">
-        <option value="">⭐ Avaliação</option>
-        <option value="high">Alta (7.5+)</option>
-        <option value="medium">Média (5 - 7.4)</option>
-        <option value="low">Baixa (0 - 4.9)</option>
+        <option value="">Filtrar por avaliação</option>
+        <option value="high">Mais avaliados</option>
+        <option value="low">Menos avaliados</option>
+        <option value="medium">Mediamente avaliados</option>
+      </select>
+      <select id="yearFilter">
+        <option value="">Filtrar por ano</option>
+        <option value="2025">Lançados em 2025</option>
+        <option value="2024">Lançados em 2024</option>
       </select>
       <select id="popularityFilter">
-        <option value="">🔥 Popularidade</option>
+        <option value="">Filtrar por popularidade</option>
         <option value="high">Mais populares</option>
         <option value="low">Menos populares</option>
       </select>
-      <button id="applyFiltersBtn">🎯 Aplicar Filtros</button>
     </div>
   </header>
 
   <div id="moviesContainer"></div>
 
   <script>
-    const API_KEY = 'bac370b35694ac13c8682b30d206c902';
-    const BASE_URL = 'https://api.themoviedb.org/3';
+    const API_KEY = 'd29e79bb675e164fc1f28decd659e21c';
+    const BASE_URL = `https://api.themoviedb.org/3`;
     const moviesContainer = document.getElementById('moviesContainer');
     const searchInput = document.getElementById('searchInput');
     const ratingFilter = document.getElementById('ratingFilter');
@@ -179,16 +125,20 @@
       const detalheDiv = document.getElementById(`detalhes-${id}`);
 
       if (detalheDiv.style.display === 'none') {
-        const [detalhes, creditos] = await Promise.all([
+        const [detalhes, creditos, videos] = await Promise.all([
           fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=pt-BR`).then(res => res.json()),
-          fetch(`${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}&language=pt-BR`).then(res => res.json())
+          fetch(`${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}&language=pt-BR`).then(res => res.json()),
+          fetch(`${BASE_URL}/movie/${id}/videos?api_key=${API_KEY}&language=pt-BR`).then(res => res.json())
         ]);
 
         const elenco = creditos.cast.slice(0, 5).map(ator => ator.name).join(', ');
+        const trailer = videos.results.find(v => v.type === "Trailer" && v.site === "YouTube");
+        const embedTrailer = trailer ? `<iframe width="100%" height="300" src="https://www.youtube.com/embed/${trailer.key}" frameborder="0" allowfullscreen></iframe>` : 'Trailer não disponível.';
 
         detalheDiv.innerHTML = `
           <p><strong>Sinopse:</strong> ${detalhes.overview}</p>
           <p><strong>Elenco:</strong> ${elenco}</p>
+          <p><strong>Trailer:</strong><br>${embedTrailer}</p>
         `;
         detalheDiv.style.display = 'block';
         btn.innerText = 'Ocultar detalhes';
@@ -204,7 +154,9 @@
       if (ratingFilter.value === 'high') url += '&vote_average.gte=7.5';
       if (ratingFilter.value === 'medium') url += '&vote_average.gte=5&vote_average.lte=7.4';
       if (ratingFilter.value === 'low') url += '&vote_average.lte=5';
+
       if (yearFilter.value) url += `&primary_release_year=${yearFilter.value}`;
+
       if (popularityFilter.value === 'high') url += '&sort_by=popularity.desc';
       if (popularityFilter.value === 'low') url += '&sort_by=popularity.asc';
 
@@ -213,7 +165,6 @@
 
     searchInput.addEventListener('input', () => {
       const query = searchInput.value.toLowerCase();
-      if (query.trim() === '') return;
       fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query}&language=pt-BR`)
         .then(res => res.json())
         .then(data => displayMovies(data.results));
